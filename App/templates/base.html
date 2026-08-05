@@ -3,32 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Placement Prediction System{% endblock %}</title>
-
-    <!-- CSS Stylesheet -->
+    <title>Placement Prediction System</title>
+    <!-- CSS File -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-
-    {% block head %}{% endblock %}
 </head>
 <body>
-
-    <!-- Navigation Header -->
+    <!-- Header -->
     <header>
-        <div class="logo">
-            Placement Prediction System
-        </div>
-        <nav>
-            <a href="{{ url_for('home') }}">Home</a>
-            <a href="#">Predict</a>
-            <a href="#">About</a>
-        </nav>
+        <h1>Placement Prediction System</h1>
+        <p>Machine Learning Project using Flask</p>
+
     </header>
+    <hr>
+    <!-- Navigation Menu -->
+    <nav>
+        <a href="/">Home</a> |
+        <a href="/dataset">Dataset</a> |
+        <a href="/eda">EDA</a> |
+        <a href="/preprocessing">Preprocessing</a> |
+        <a href="/models">Models</a> |
+        <a href="/evaluation">Evaluation</a> |
+        <a href="/comparison">Comparison</a> |
+        <a href="/prediction">Prediction</a>
+    </nav>
+    <hr>
+    <!-- Page Content -->
+    <div>
+        {% block content %}
 
-    <!-- Dynamic Content Area -->
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-
-    {% block scripts %}{% endblock %}
+        {% endblock %}
+    </div>
 </body>
 </html>

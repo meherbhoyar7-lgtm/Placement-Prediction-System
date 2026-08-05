@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}DataSet - Placement Prediction{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h2>DataSet Loading</h2>
+    <p>The placement dataset has been loaded successfully.</p>
+
+    <h2>DataSet Summary</h2>
+    <table border="1" cellpadding="8" cellspacing="0" style="margin-bottom: 30px; text-align: left;">
+        <tr>
+            <th>Total Records</th>
+            <td>{{ summary.rows }}</td>
+        </tr>
+        <tr>
+            <th>Total Columns</th>
+            <td>{{ summary.columns }}</td>
+        </tr>
+        <tr>
+            <th>Target Variable</th>
+            <td>{{ summary.target }}</td>
+        </tr>
+    </table>
+
+    <h2>Data Preview (First 5 Rows)</h2>
+    <!-- The | safe filter tells Jinja to render the pandas HTML table instead of raw text -->
+    <div style="overflow-x: auto; margin-top: 15px;">
+        {{ first_rows | safe }}
+    </div>
+</div>
+{% endblock %}

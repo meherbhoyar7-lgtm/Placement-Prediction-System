@@ -1,129 +1,175 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
+/* ================= BASE & VARIABLES ================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap');
+
+:root {
+    --primary: #2563eb;       /* Vibrant Blue */
+    --secondary: #0ea5e9;     /* Bright Cyan */
+    --bg-color: #f8fafc;      /* Very soft slate/white */
+    --text-main: #0f172a;     /* Deep navy/black */
+    --text-muted: #64748b;    /* Soft gray */
+    --card-bg: rgba(255, 255, 255, 0.85);
 }
 
-body{
-    background:#f4f7fb;
-    color:#333;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-main);
+    min-height: 100vh;
+    /* Soft background glow effect */
+    background-image:
+        radial-gradient(at 0% 0%, hsla(217,100%,76%,0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, hsla(199,100%,74%,0.15) 0px, transparent 50%);
+    background-attachment: fixed;
+}
+
+/* Hide dated HTML elements */
+hr {
+    display: none;
 }
 
 /* ================= HEADER ================= */
-
-header{
-
-    width:100%;
-    height:75px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    padding:0 70px;
-
-    background:white;
-
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
+header {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.logo{
-
-    font-size:28px;
-    font-weight:bold;
-
-    color:#003366;
+header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    /* Gradient Text */
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
 }
 
-nav a{
-
-    text-decoration:none;
-
-    color:#444;
-
-    margin-left:35px;
-
-    font-size:17px;
-
-    transition:.3s;
+header p {
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 14px;
 }
 
-nav a:hover{
-
-    color:#0056b3;
+/* ================= NAVIGATION ================= */
+nav {
+    background: white;
+    padding: 15px 5%;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.03);
+    color: transparent; /* Hides the raw '|' text nodes from the HTML */
 }
 
-/* ================= HERO ================= */
-
-.hero{
-
-    width:80%;
-
-    margin:80px auto;
-
-    background:white;
-
-    border-radius:15px;
-
-    padding:60px;
-
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
+nav a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 15px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.hero h1{
-
-    font-size:46px;
-
-    color:#1d3557;
-
-    margin-bottom:20px;
+nav a:hover {
+    color: var(--primary);
+    background: rgba(37, 99, 235, 0.08); /* Soft blue pill on hover */
+    transform: translateY(-1px);
 }
 
-.hero h3{
+/* ================= HERO (Card) ================= */
+.hero {
+    width: 90%;
+    max-width: 900px;
+    margin: 80px auto;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 24px; /* Smoother, rounder corners */
+    padding: 70px 60px;
 
-    color:#0066cc;
+    /* Beautiful floating shadow */
+    box-shadow:
+        0 20px 40px -10px rgba(0,0,0,0.05),
+        0 0 20px rgba(37, 99, 235, 0.05);
 
-    margin-bottom:20px;
-
-    font-weight:500;
+    /* Entrance Animation */
+    animation: slideUp 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
 }
 
-.hero p{
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-    width:80%;
+.hero h2, .hero h1 {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+}
 
-    line-height:1.8;
+.hero h3 {
+    font-size: 18px;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
 
-    color:#555;
-
-    font-size:18px;
-
-    margin-bottom:35px;
+.hero p {
+    line-height: 1.8;
+    color: var(--text-muted);
+    font-size: 18px;
+    margin-bottom: 45px;
+    max-width: 600px;
 }
 
 /* ================= BUTTON ================= */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 16px 36px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-.btn{
-
-    display:inline-block;
-
-    text-decoration:none;
-
-    background:#0056b3;
-
-    color:white;
-
-    padding:14px 30px;
-
-    border-radius:8px;
-
-    font-size:17px;
-
-    transition:.3s;
+    /* Glowing drop shadow matching the button color */
+    box-shadow: 0 10px 20px -10px var(--primary);
 }
 
-.btn:hover{
+.btn:hover {
+    transform: translateY(-3px) scale(1.02); /* Slight lift and zoom */
+    box-shadow: 0 15px 25px -10px var(--primary);
+}
 
-    background:#003d80;
+.btn:active {
+    transform: translateY(0) scale(0.98); /* Click-in effect */
 }

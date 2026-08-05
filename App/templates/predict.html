@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Predict - Placement Prediction{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h2>Placement Predictor</h2>
+    <p>Enter your academic details below to check your placement probability.</p>
+
+    <!-- The form sends data to the /predict route via POST method -->
+    <form action="{{ url_for('predict') }}" method="POST" style="margin-top: 30px;">
+        
+        <div style="margin-bottom: 20px;">
+            <label for="cgpa" style="display: block; font-weight: bold; margin-bottom: 8px; color: #1d3557;">CGPA (out of 10):</label>
+            <input type="number" step="0.01" id="cgpa" name="cgpa" required 
+                   style="width: 100%; max-width: 300px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
+        </div>
+
+        <div style="margin-bottom: 30px;">
+            <label for="iq" style="display: block; font-weight: bold; margin-bottom: 8px; color: #1d3557;">IQ Score:</label>
+            <input type="number" id="iq" name="iq" required 
+                   style="width: 100%; max-width: 300px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
+        </div>
+
+        <button type="submit" class="btn">Predict Placement</button>
+    </form>
+
+    <!-- This section only appears after the form is submitted and prediction exists -->
+    {% if prediction %}
+    <div style="margin-top: 40px; padding: 25px; background-color: #e8f4f8; border-left: 6px solid #0056b3; border-radius: 8px;">
+        <h3 style="margin-bottom: 10px; color: #1d3557;">Prediction Result:</h3>
+        <p style="margin-bottom: 0; font-size: 22px; font-weight: bold; color: #003366;">
+            {{ prediction }}
+        </p>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

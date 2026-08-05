@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Exploratory Data Analysis (EDA)</h2>
+
+<style>
+    /* Use CSS Grid for a strict 2-column layout */
+    .charts-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Creates exactly 2 equal columns */
+        gap: 40px 30px; /* 40px gap between rows, 30px gap between columns */
+        margin-top: 30px;
+    }
+
+    /* Make it responsive: switch to 1 column on smaller screens */
+    @media (max-width: 800px) {
+        .charts-container {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Styling for each individual chart block */
+    .chart-box {
+        text-align: center;
+        background-color: #fcfcfc; /* Optional: light background for the box */
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Soft container shadow */
+
+        /* The entrance animation */
+        animation: fadeInUp 0.8s ease-out forwards;
+        opacity: 0;
+    }
+
+    /* Styling the images themselves */
+    .chart-box img {
+        width: 100%;
+        max-width: 600px;
+        border-radius: 8px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    /* Hover animation: slight zoom effect */
+    .chart-box img:hover {
+        transform: scale(1.03);
+    }
+
+    /* Entrance animation keyframes */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="charts-container">
+
+    <div class="chart-box">
+        <h3>CGPA Histogram</h3>
+        <img src="{{ url_for('static', filename='charts/cgpa_histogram.png') }}" alt="CGPA Histogram">
+        <p>Visualizing Distribution of CGPA</p>
+    </div>
+
+    <div class="chart-box">
+        <h3>CGPA vs Placement Status Box</h3>
+        <img src="{{ url_for('static', filename='charts/GGPA_PlacementStatus.png') }}" alt="CGPA Placement Box">
+        <p>Visualizing relation between CGPA and Placement Status</p>
+    </div>
+
+
+
+</div>
+
+{% endblock %}
