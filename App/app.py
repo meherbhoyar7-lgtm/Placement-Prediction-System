@@ -71,6 +71,7 @@ def models():
 
     classification_results = []
     linear_results = []
+    clustering_results = []
     data_available = os.path.exists(train_path) and os.path.exists(test_path)
 
     if data_available:
@@ -162,11 +163,32 @@ def models():
                 "r2": round(r2_score(y_test_reg, y_pred_reg) * 100, 2),
             })
 
+        # --- Clustering Models ---
+        from sklearn.cluster import KMeans, AgglomerativeClustering
+        from sklearn.metrics import silhouette_score
+        
+        # Sample the preprocessed data to avoid memory issues and speed up hierarchy clustering
+        X_clust_sample = X_train_cls.sample(n=500, random_state=42)
+        
+        kmeans = KMeans(n_clusters=3, init='k-means++', n_init=10, max_iter=300, random_state=42)
+        labels_kmeans = kmeans.fit_predict(X_clust_sample)
+        score_kmeans = silhouette_score(X_clust_sample, labels_kmeans)
+        
+        agglo = AgglomerativeClustering(n_clusters=3, linkage="ward")
+        labels_agglo = agglo.fit_predict(X_clust_sample)
+        score_agglo = silhouette_score(X_clust_sample, labels_agglo)
+        
+        clustering_results = [
+            {"name": "K-Means Clustering", "silhouette": round(score_kmeans, 4)},
+            {"name": "Agglomerative Clustering", "silhouette": round(score_agglo, 4)}
+        ]
+
     return render_template(
         "models.html",
         data_available=data_available,
         classification_results=classification_results,
         linear_results=linear_results,
+        clustering_results=clustering_results,
     )
 
 

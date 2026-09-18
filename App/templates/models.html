@@ -321,6 +321,36 @@
         </div>
         {% endif %}
 
+        <!-- ═══════════ CLUSTERING MODELS ═══════════ -->
+        <div class="section-header">
+            <div class="section-icon classify" style="background: linear-gradient(135deg, #fdf4ff, #fae8ff); color: #c026d3;">🧩</div>
+            <div>
+                <h3>Clustering Models</h3>
+                <p>Unsupervised Learning — Grouping Students based on similarities</p>
+            </div>
+        </div>
+
+        {% if clustering_results %}
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Silhouette Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model in clustering_results %}
+                    <tr>
+                        <td class="model-name">{{ model.name }}</td>
+                        <td>{{ model.silhouette }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
     {% endif %}
 </div>
 {% endblock %}
