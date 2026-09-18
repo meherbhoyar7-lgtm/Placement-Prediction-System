@@ -1,7 +1,17 @@
-from flask import Flask, render_template, request
+import os
+import sys
+
+import pandas as pd
+import joblib
+from flask import Flask, render_template, request, send_from_directory
 from src.data.load_data import load_data, get_summary
 
 app = Flask(__name__)
+
+# Paths
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "Data")
+MODELS_DIR = os.path.join(BASE_DIR, "Models")
 
 
 @app.route("/")
@@ -16,12 +26,149 @@ def dataset():
     return render_template(
         "load_dataset.html",
         summary=summary,
-        first_rows=df.head().to_html(index=False)
+        first_rows=df.head().to_html(index=False, classes="data-table")
     )
+
 
 @app.route("/eda")
 def eda():
     return render_template("eda.html")
 
+
+@app.route("/preprocessing")
+def preprocessing():
+    train_path = os.path.join(DATA_DIR, "preprocessed_train.csv")
+    test_path = os.path.join(DATA_DIR, "preprocessed_test.csv")
+
+    file_exists = os.path.exists(train_path)
+    shape = (0, 0)
+    train_head = ""
+
+    if file_exists:
+        train_df = pd.read_csv(train_path)
+        shape = train_df.shape
+        train_head = train_df.head(10).to_html(
+            index=False, classes="data-table"
+        )
+
+    return render_template(
+        "preprocessing.html",
+        file_exists=file_exists,
+        shape=shape,
+        train_head=train_head,
+    )
+
+
+@app.route("/download/<filename>")
+def download_file(filename):
+    return send_from_directory(DATA_DIR, filename, as_attachment=True)
+
+
+@app.route("/models")
+def models():
+    train_path = os.path.join(DATA_DIR, "preprocessed_train.csv")
+    test_path = os.path.join(DATA_DIR, "preprocessed_test.csv")
+
+    classification_results = []
+    linear_results = []
+    data_available = os.path.exists(train_path) and os.path.exists(test_path)
+
+    if data_available:
+        train_df = pd.read_csv(train_path)
+        test_df = pd.read_csv(test_path)
+
+        # --- Classification Models ---
+        from sklearn.linear_model import LogisticRegression
+        from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+        from sklearn.tree import DecisionTreeClassifier
+        from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+        X_train_cls = train_df.drop(columns="PlacementStatus")
+        y_train_cls = train_df["PlacementStatus"]
+        X_test_cls = test_df.drop(columns="PlacementStatus")
+        y_test_cls = test_df["PlacementStatus"]
+
+        cls_models = {
+            "Logistic Regression": LogisticRegression(max_iter=1000, random_state=42),
+            "Random Forest": RandomForestClassifier(n_estimators=100, max_features="sqrt", random_state=42),
+            "Decision Tree": DecisionTreeClassifier(random_state=42),
+            "Gradient Boosting": GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=5, subsample=0.5, random_state=42)
+        }
+
+        classification_results = []
+        for name, model in cls_models.items():
+            model.fit(X_train_cls, y_train_cls)
+            y_pred_cls = model.predict(X_test_cls)
+            classification_results.append({
+                "name": name,
+                "accuracy": round(accuracy_score(y_test_cls, y_pred_cls) * 100, 2),
+                "precision": round(precision_score(y_test_cls, y_pred_cls, zero_division=0) * 100, 2),
+                "recall": round(recall_score(y_test_cls, y_pred_cls, zero_division=0) * 100, 2),
+                "f1": round(f1_score(y_test_cls, y_pred_cls, zero_division=0) * 100, 2),
+            })
+
+        # --- Linear Regression (Salary Prediction) ---
+        from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
+        from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
+        # For linear regression, reload original data to get Salary Package
+        from src.data.preprocess import (
+            split_data, identify_features, handle_missing_values,
+            standardize_data, one_hot_encode_data, ordinal_encode_data
+        )
+
+        raw_df = load_data()
+        X_train_reg, X_test_reg, y_train_reg, y_test_reg = split_data(
+            raw_df,
+            target_columns="Salary Package",
+            drop_columns=["StudentID", "PlacementStatus", "IsAnomaly"]
+        )
+        num_feats, cat_feats = identify_features(X_train_reg)
+        one_hot_feats = [
+            'Gender', 'City', 'Stream', 'Specialisation',
+            'Hostel', 'HistoryOfBacklogs'
+        ]
+        ordinal_feats = ['CollegeTier', 'CGPA_Tier']
+
+        X_train_reg, X_test_reg, _ = handle_missing_values(
+            X_train_reg, X_test_reg, num_feats
+        )
+        X_train_reg, X_test_reg, _ = standardize_data(
+            X_train_reg, X_test_reg, num_feats
+        )
+        X_train_reg, X_test_reg, _ = one_hot_encode_data(
+            X_train_reg, X_test_reg, one_hot_feats
+        )
+        X_train_reg, X_test_reg, _ = ordinal_encode_data(
+            X_train_reg, X_test_reg, ordinal_feats
+        )
+
+        reg_models = {
+            "Linear Regression": LinearRegression(),
+            "Ridge Regression": Ridge(alpha=1.0),
+            "Lasso Regression": Lasso(alpha=0.01),
+            "ElasticNet": ElasticNet(alpha=0.01, l1_ratio=0.5),
+        }
+
+        linear_results = []
+        for name, model in reg_models.items():
+            model.fit(X_train_reg, y_train_reg)
+            y_pred_reg = model.predict(X_test_reg)
+            linear_results.append({
+                "name": name,
+                "mae": round(mean_absolute_error(y_test_reg, y_pred_reg), 2),
+                "mse": round(mean_squared_error(y_test_reg, y_pred_reg), 2),
+                "rmse": round(mean_squared_error(y_test_reg, y_pred_reg) ** 0.5, 2),
+                "r2": round(r2_score(y_test_reg, y_pred_reg) * 100, 2),
+            })
+
+    return render_template(
+        "models.html",
+        data_available=data_available,
+        classification_results=classification_results,
+        linear_results=linear_results,
+    )
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5005)

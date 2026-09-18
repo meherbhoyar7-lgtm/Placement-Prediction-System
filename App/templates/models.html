@@ -1,0 +1,326 @@
+{% extends "base.html" %}
+
+{% block title %}Models - Placement Prediction System{% endblock %}
+
+{% block content %}
+<style>
+    .models-container {
+        font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .models-container h2 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.5px;
+    }
+
+    .models-subtitle {
+        color: #64748b;
+        font-size: 1.05rem;
+        margin-bottom: 2.5rem;
+    }
+
+    /* Section Headers */
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+        margin-top: 2.5rem;
+    }
+
+    .section-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        flex-shrink: 0;
+    }
+
+    .section-icon.classify {
+        background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+        color: #4f46e5;
+    }
+
+    .section-icon.regress {
+        background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+        color: #059669;
+    }
+
+    .section-header h3 {
+        font-size: 1.35rem;
+        font-weight: 700;
+        margin: 0;
+        color: #0f172a;
+    }
+
+    .section-header p {
+        font-size: 0.875rem;
+        color: #64748b;
+        margin: 2px 0 0 0;
+    }
+
+    /* Metric Cards Grid */
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+    }
+
+    .metric-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .metric-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .metric-card.accuracy::before { background: linear-gradient(90deg, #4f46e5, #7c3aed); }
+    .metric-card.precision::before { background: linear-gradient(90deg, #0ea5e9, #06b6d4); }
+    .metric-card.recall::before { background: linear-gradient(90deg, #f59e0b, #f97316); }
+    .metric-card.f1::before { background: linear-gradient(90deg, #10b981, #059669); }
+
+    .metric-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .metric-label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        color: #94a3b8;
+        margin-bottom: 0.75rem;
+    }
+
+    .metric-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+    }
+
+    .metric-value.accuracy { color: #4f46e5; }
+    .metric-value.precision { color: #0ea5e9; }
+    .metric-value.recall { color: #f59e0b; }
+    .metric-value.f1 { color: #10b981; }
+
+    .metric-unit {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    /* Comparison Table */
+    .table-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
+
+    .table-card table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table-card thead th {
+        background: #f8fafc;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #475569;
+        padding: 1rem 1.25rem;
+        border-bottom: 2px solid #e2e8f0;
+        text-align: left;
+    }
+
+    .table-card tbody td {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+
+    .table-card tbody tr {
+        transition: background 0.15s ease;
+    }
+
+    .table-card tbody tr:hover {
+        background: #f8fafc;
+    }
+
+    .model-name {
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .r2-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .r2-good {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .r2-ok {
+        background: #fef9c3;
+        color: #854d0e;
+    }
+
+    .r2-bad {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    /* Error Banner */
+    .error-banner {
+        background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        color: #991b1b;
+        padding: 1.5rem 2rem;
+        border-radius: 12px;
+        border: 1px solid #fecaca;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .error-banner span {
+        font-size: 1.5rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+        .metrics-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .table-card {
+            overflow-x: auto;
+        }
+    }
+</style>
+
+<div class="models-container">
+    <h2>ML Models</h2>
+    <p class="models-subtitle">Training results for Logistic Regression (classification) and Linear Regression variants (salary prediction).</p>
+
+    {% if not data_available %}
+        <div class="error-banner">
+            <span>⚠️</span>
+            <div>No preprocessed data found! Please run the preprocessing step first, then revisit this page.</div>
+        </div>
+    {% else %}
+
+        <!-- ═══════════ LOGISTIC REGRESSION ═══════════ -->
+        <div class="section-header">
+            <div class="section-icon classify">🎯</div>
+            <div>
+                <h3>Classification Models</h3>
+                <p>Binary classification — Predicting Placement Status (Placed / Not Placed)</p>
+            </div>
+        </div>
+
+        {% if classification_results %}
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Accuracy</th>
+                        <th>Precision</th>
+                        <th>Recall</th>
+                        <th>F1 Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model in classification_results %}
+                    <tr>
+                        <td class="model-name">{{ model.name }}</td>
+                        <td>{{ model.accuracy }}%</td>
+                        <td>{{ model.precision }}%</td>
+                        <td>{{ model.recall }}%</td>
+                        <td>{{ model.f1 }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <!-- ═══════════ LINEAR REGRESSION ═══════════ -->
+        <div class="section-header">
+            <div class="section-icon regress">📈</div>
+            <div>
+                <h3>Linear Regression Variants</h3>
+                <p>Regression — Predicting Salary Package (₹ LPA)</p>
+            </div>
+        </div>
+
+        {% if linear_results %}
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>MAE</th>
+                        <th>MSE</th>
+                        <th>RMSE</th>
+                        <th>R² Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model in linear_results %}
+                    <tr>
+                        <td class="model-name">{{ model.name }}</td>
+                        <td>{{ model.mae }}</td>
+                        <td>{{ model.mse }}</td>
+                        <td>{{ model.rmse }}</td>
+                        <td>
+                            {% if model.r2 >= 70 %}
+                                <span class="r2-badge r2-good">{{ model.r2 }}%</span>
+                            {% elif model.r2 >= 40 %}
+                                <span class="r2-badge r2-ok">{{ model.r2 }}%</span>
+                            {% else %}
+                                <span class="r2-badge r2-bad">{{ model.r2 }}%</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+    {% endif %}
+</div>
+{% endblock %}

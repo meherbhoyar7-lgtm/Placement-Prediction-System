@@ -4,12 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6a533c96-814f-413d-95cc-25a0acc85e75" name="Changes" comment="Project Initial Structure Updated">
-      <change afterPath="$PROJECT_DIR$/App/app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/static/css/styles.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/templates/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/App/templates/home.html" afterDir="false" />
+    <list default="true" id="6a533c96-814f-413d-95cc-25a0acc85e75" name="Changes" comment="Eda complete with new CSS">
+      <change afterPath="$PROJECT_DIR$/App/templates/models.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/App/templates/preprocessing.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/placement_data.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/preprocessed_test.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/preprocessed_train.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/logistic_regression.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MLmodels/Agglomerative_clustering.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MLmodels/Decision_tree.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MLmodels/Random_tree.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MLmodels/gradient_boosting.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MLmodels/kmeans.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MLmodels/kmeans_elbow.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MLmodels/linear_regression.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/MLmodels/logistic_regression.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data/preprocess.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/App/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/App/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/templates/about.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/App/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/templates/eda.html" beforeDir="false" afterPath="$PROJECT_DIR$/App/templates/eda.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/App/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App/templates/predict.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,8 +38,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -39,6 +58,9 @@
     &quot;accountId&quot;: &quot;e68f4621-457a-41a4-af7c-d7c97cfbb5ab&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/MLmodels/linear_regression.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -47,25 +69,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.app.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.Decision_tree.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Random_tree.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app.executor&quot;: &quot;Run&quot;,
+    &quot;Python.eda.executor&quot;: &quot;Run&quot;,
+    &quot;Python.edairis.executor&quot;: &quot;Run&quot;,
+    &quot;Python.kmeans.executor&quot;: &quot;Run&quot;,
+    &quot;Python.linear_regression.executor&quot;: &quot;Run&quot;,
+    &quot;Python.load_data.executor&quot;: &quot;Run&quot;,
+    &quot;Python.logistic_regression.executor&quot;: &quot;Run&quot;,
+    &quot;Python.preprocess.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/meherbhoyar/Desktop/Placement Prediction System/PlacementpredictionSystem&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Data" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/MLmodels" />
       <recent name="$PROJECT_DIR$/App/templates" />
       <recent name="$PROJECT_DIR$/App/static/css" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.app">
     <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PlacementpredictionSystem" />
       <option name="ENV_FILES" value="" />
@@ -88,9 +124,78 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="eda" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PlacementpredictionSystem" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/data/eda.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="load_data" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PlacementpredictionSystem" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/data/load_data.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="preprocess" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PlacementpredictionSystem" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/data/preprocess.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.app" />
+        <item itemvalue="Python.preprocess" />
+        <item itemvalue="Python.eda" />
+        <item itemvalue="Python.load_data" />
       </list>
     </recent_temporary>
   </component>
@@ -133,12 +238,38 @@
       <option name="project" value="LOCAL" />
       <updated>1785222156461</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Updated on 29th July class">
+      <option name="closed" value="true" />
+      <created>1785309575903</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1785309575903</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Updated on 29th July class">
+      <option name="closed" value="true" />
+      <created>1785309588848</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1785309588848</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Eda complete with new CSS">
+      <option name="closed" value="true" />
+      <created>1785912575526</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1785912575526</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Project Initial Structure Created" />
     <MESSAGE value="Project Initial Structure Updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="Project Initial Structure Updated" />
+    <MESSAGE value="Updated on 29th July class" />
+    <MESSAGE value="Eda complete with new CSS" />
+    <option name="LAST_COMMIT_MESSAGE" value="Eda complete with new CSS" />
   </component>
 </project>

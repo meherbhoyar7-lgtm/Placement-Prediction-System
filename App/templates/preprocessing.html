@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Preprocessing - Placement Prediction System{% endblock %}
+
+{% block content %}
+<style>
+    .prep-container {
+        font-family: 'Inter', sans-serif;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    h2 {
+        color: #4F46E5;
+        margin-bottom: 1.5rem;
+    }
+
+    .file-card {
+        background: white;
+        border: 1px solid #E5E7EB;
+        border-radius: 12px;
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        margin-bottom: 2rem;
+    }
+
+    .file-icon {
+        font-size: 4rem;
+        text-decoration: none;
+    }
+
+    .file-info h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.5rem;
+    }
+
+    .file-info p {
+        color: #6B7280;
+        margin: 0 0 1rem 0;
+    }
+
+    .btn-download {
+        display: inline-block;
+        background-color: #10B981;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.2s;
+    }
+
+    .btn-download:hover {
+        background-color: #059669;
+    }
+
+    /* Table styling for pandas html output */
+    .table-responsive {
+        overflow-x: auto;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        padding: 1rem;
+    }
+    
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+    }
+
+    .data-table th {
+        background-color: #F3F4F6;
+        color: #374151;
+        font-weight: 600;
+        text-align: left;
+        padding: 0.75rem 1rem;
+        border-bottom: 2px solid #E5E7EB;
+        white-space: nowrap;
+    }
+
+    .data-table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #E5E7EB;
+        color: #4B5563;
+        white-space: nowrap;
+    }
+
+    .data-table tr:hover {
+        background-color: #F9FAFB;
+    }
+</style>
+
+<div class="prep-container">
+    <h2>Data Preprocessing</h2>
+    
+    <p>The raw placement data has been processed (missing values imputed, categorical variables one-hot encoded, and numerical variables scaled).</p>
+
+    {% if file_exists %}
+        <div class="file-card">
+            <a href="/download/train_preprocessed.csv" title="Download Excel/CSV File" class="file-icon">📄</a>
+            <div class="file-info">
+                <h3>Preprocessed Training Data</h3>
+                <p>Shape: {{ shape[0] }} rows × {{ shape[1] }} columns</p>
+                <a href="/download/train_preprocessed.csv" class="btn-download">Download Data (Excel/CSV)</a>
+                <a href="/download/test_preprocessed.csv" class="btn-download" style="background-color: #4F46E5; margin-left: 10px;">Download Test Data</a>
+            </div>
+        </div>
+
+        <h3>Data Preview (First 10 Rows)</h3>
+        <div class="table-responsive">
+            {{ train_head | safe }}
+        </div>
+    {% else %}
+        <div style="background: #FEE2E2; color: #991B1B; padding: 1rem; border-radius: 8px;">
+            <strong>No preprocessed data found!</strong> Please run the preprocessing script (`preprocess.py`) to generate the files.
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

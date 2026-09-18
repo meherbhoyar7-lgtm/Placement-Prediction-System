@@ -3,12 +3,178 @@
 {% block title %}Home - Placement Prediction System{% endblock %}
 
 {% block content %}
-<div class="hero">
-    <h1>Placement Prediction System</h1>
-    <h3>Welcome to Machine Learning Projects</h3>
-    <p>
-        This application predicts whether a student is likely to be placed based on their academic performance and skills.
-    </p>
-    <a href="{{ url_for('predict') }}" class="btn">Get Started</a>
+<style>
+    /* Modern UI Variables */
+    :root {
+        --primary-color: #4F46E5;
+        --primary-hover: #4338CA;
+        --bg-color: #F9FAFB;
+        --card-bg: #FFFFFF;
+        --text-main: #111827;
+        --text-muted: #6B7280;
+    }
+
+    /* Page Reset for the content block */
+    .home-container {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        padding: 2rem 1rem;
+        line-height: 1.6;
+    }
+
+    /* Hero Section */
+    .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto 4rem auto;
+        padding: 4rem 2rem;
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(79, 70, 229, 0.15) 100%);
+        border-radius: 24px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .hero-badge {
+        background-color: #E0E7FF;
+        color: var(--primary-color);
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin: 0 0 1rem 0;
+        letter-spacing: -0.02em;
+        color: var(--text-main);
+    }
+
+    .hero h1 span {
+        color: var(--primary-color);
+    }
+
+    .hero p {
+        font-size: 1.125rem;
+        color: var(--text-muted);
+        max-width: 600px;
+        margin: 0 auto 2rem auto;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-size: 1.125rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.23);
+        color: white;
+    }
+
+    /* Features Section */
+    .features-wrapper {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 3rem;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .feature-card {
+        background: var(--card-bg);
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        transition: transform 0.2s ease;
+        border: 1px solid #E5E7EB;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .feature-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+        color: var(--text-muted);
+        margin: 0;
+        font-size: 0.95rem;
+    }
+</style>
+
+<div class="home-container">
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-badge">Machine Learning Project</div>
+        <h1>Placement <span>Prediction</span> System</h1>
+        <p>
+            Leverage the power of data to forecast your career trajectory. Our model analyzes your academic performance, skills, and experience to predict your likelihood of campus placement.
+        </p>
+        <a href="/prediction" class="btn-primary">Try the Predictor</a>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-wrapper">
+        <h2 class="section-title">How It Works</h2>
+        <div class="features-grid">
+
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Data-Driven Accuracy</h3>
+                <p>Trained on historical campus placement data to find the hidden patterns between student profiles and successful hires.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Instant Assessment</h3>
+                <p>Input your CGPA, internship experience, and technical skills to get an immediate probability score of getting placed.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">💡</div>
+                <h3>Identify Skill Gaps</h3>
+                <p>Understand which areas of your profile need improvement so you can focus your efforts before interview season begins.</p>
+            </div>
+
+        </div>
+    </div>
 </div>
 {% endblock %}
