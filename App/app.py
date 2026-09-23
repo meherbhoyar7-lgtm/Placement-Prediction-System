@@ -76,6 +76,7 @@ def models():
     classification_results = []
     linear_results = []
     clustering_results = []
+    anomaly_results = []
     data_available = os.path.exists(train_path) and os.path.exists(test_path)
 
     if data_available:
@@ -187,12 +188,62 @@ def models():
             {"name": "Agglomerative Clustering", "silhouette": round(score_agglo, 4)}
         ]
 
+        # --- Anomaly Detection Models ---
+        from sklearn.ensemble import IsolationForest
+        from sklearn.svm import OneClassSVM
+        from sklearn.neural_network import MLPRegressor
+        import numpy as np
+
+        # For anomaly detection we'll use a sample to keep page load times fast
+        X_train_anomaly = X_train_reg.sample(n=2000, random_state=42)
+        X_test_anomaly = X_test_reg.sample(n=500, random_state=42)
+        y_test_anomaly = raw_df.loc[X_test_anomaly.index, 'IsAnomaly'].astype(int)
+
+        # 1. Isolation Forest
+        iso_forest = IsolationForest(contamination=0.035, random_state=42)
+        iso_forest.fit(X_train_anomaly)
+        preds_iso = iso_forest.predict(X_test_anomaly)
+        preds_iso_converted = [1 if p == -1 else 0 for p in preds_iso]
+        
+        # 2. One-Class SVM
+        oc_svm = OneClassSVM(nu=0.035, kernel="rbf", gamma="scale")
+        oc_svm.fit(X_train_anomaly)
+        preds_svm = oc_svm.predict(X_test_anomaly)
+        preds_svm_converted = [1 if p == -1 else 0 for p in preds_svm]
+        
+        # 3. Auto Encoder
+        ae = MLPRegressor(hidden_layer_sizes=(16, 8, 16), activation='relu', solver='adam', max_iter=100, random_state=42)
+        ae.fit(X_train_anomaly, X_train_anomaly)
+        ae_preds = ae.predict(X_test_anomaly)
+        mse = np.mean(np.power(X_test_anomaly - ae_preds, 2), axis=1)
+        threshold = np.percentile(mse, 96.5)
+        preds_ae_converted = (mse > threshold).astype(int)
+
+        anomaly_results = [
+            {
+                "name": "Isolation Forest",
+                "accuracy": round(accuracy_score(y_test_anomaly, preds_iso_converted) * 100, 2),
+                "f1": round(f1_score(y_test_anomaly, preds_iso_converted, zero_division=0) * 100, 2)
+            },
+            {
+                "name": "One-Class SVM",
+                "accuracy": round(accuracy_score(y_test_anomaly, preds_svm_converted) * 100, 2),
+                "f1": round(f1_score(y_test_anomaly, preds_svm_converted, zero_division=0) * 100, 2)
+            },
+            {
+                "name": "Auto Encoder",
+                "accuracy": round(accuracy_score(y_test_anomaly, preds_ae_converted) * 100, 2),
+                "f1": round(f1_score(y_test_anomaly, preds_ae_converted, zero_division=0) * 100, 2)
+            }
+        ]
+
     return render_template(
         "models.html",
         data_available=data_available,
         classification_results=classification_results,
         linear_results=linear_results,
         clustering_results=clustering_results,
+        anomaly_results=anomaly_results,
     )
 
 

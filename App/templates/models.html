@@ -351,6 +351,38 @@
         </div>
         {% endif %}
 
+        <!-- ═══════════ ANOMALY DETECTION MODELS ═══════════ -->
+        <div class="section-header">
+            <div class="section-icon classify" style="background: linear-gradient(135deg, #fef2f2, #fee2e2); color: #dc2626;">🚨</div>
+            <div>
+                <h3>Anomaly Detection Models</h3>
+                <p>Unsupervised Learning — Detecting abnormal placement patterns</p>
+            </div>
+        </div>
+
+        {% if anomaly_results %}
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Accuracy</th>
+                        <th>F1 Score (Anomaly Class)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model in anomaly_results %}
+                    <tr>
+                        <td class="model-name">{{ model.name }}</td>
+                        <td>{{ model.accuracy }}%</td>
+                        <td>{{ model.f1 }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
     {% endif %}
 </div>
 {% endblock %}
